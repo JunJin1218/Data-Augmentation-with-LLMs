@@ -3,3 +3,4 @@ dataset: super_glue
 subset: cb
 batch: 1000
 shots: 5
+gen_per_request: 5

@@ -31,11 +31,11 @@ def main(cfg: DictConfig):
     task = get_task_name(cfg)
 
     # Convert to absolute path because Hydra changes the working directory
-    batch_input_dir = cfg.get("output_dir", os.path.join("gpt", "batchs", task))
+    batch_input_dir = cfg.get("output_dir", os.path.join("gpt", "batches", task))
     batch_input_dir = to_absolute_path(batch_input_dir)
 
     batch_id_list_path = to_absolute_path(
-        os.path.join("gpt", "batchs", task, f"batch_id_list.jsonl")  # gpt/batchs/{task}/...
+        os.path.join("gpt", "batches", task, f"batch_id_list.jsonl")  # gpt/batches/{task}/...
     )
     os.makedirs(os.path.dirname(batch_id_list_path), exist_ok=True)
 

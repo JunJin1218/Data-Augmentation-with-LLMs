@@ -56,7 +56,7 @@ def main(cfg: DictConfig):
     model_name = cfg.model
     batch_size = cfg.batch
     shots = cfg.shots
-    output_dir = f"gpt/batchs/{get_task_name(cfg)}"
+    output_dir = f"gpt/batches/{get_task_name(cfg)}"
 
     # Convert to absolute path because Hydra changes the working directory
     output_dir = to_absolute_path(output_dir)
@@ -71,6 +71,7 @@ def main(cfg: DictConfig):
     num_samples = len(ds)
 
     prompt_fn = get_user_prompt_fn(cfg)
+    gen_per_request = cfg.get("gen_per_request", 5)
     
 
     for start in tqdm(range(0, num_samples, shots), desc="Processing samples"):
@@ -80,6 +81,7 @@ def main(cfg: DictConfig):
         system_prompt = system_tmpl
         user_parts = [user_tmpl.strip(), ""]
         user_parts.append(prompt_fn(chunk))
+        user_parts.append(f"You will now generate exactly {gen_per_request} new examples.")
         user_prompt = "\n".join(user_parts).strip()
 
         prompt = [
@@ -95,7 +97,6 @@ def main(cfg: DictConfig):
                 "model": model_name,
                 "input": prompt,
                 "text": schema,
-                "include": ["message.output_text.logprobs"],
             },
         }
         records.append(record)
