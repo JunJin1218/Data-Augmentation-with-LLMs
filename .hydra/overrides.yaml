@@ -1,0 +1,3 @@
+- batch=10
+- shots=2
+- gen_per_request=1

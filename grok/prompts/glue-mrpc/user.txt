@@ -1,0 +1,10 @@
+You are given several examples of labeled sentence pairs.
+
+Each pair follows this schema:
+{
+  "Text1": "<sentence 1>",
+  "Text2": "<sentence 2>",
+  "Equivalence": true or false
+}
+
+Here are example few-shot samples:

@@ -32,7 +32,7 @@ if not API_KEY:
     sys.exit(1)
 
 URL = "https://api.x.ai/v1/chat/completions"
-MODEL = "grok-4-latest"
+MODEL = "grok-3-mini"
 
 payload = {
     "model": MODEL,

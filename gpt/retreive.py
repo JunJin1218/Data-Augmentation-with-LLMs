@@ -2,13 +2,6 @@
 from dataclasses import dataclass
 from pathlib import Path
 import json
-import os
-try:
-    from dotenv import load_dotenv
-
-    load_dotenv()
-except Exception:
-    pass
 
 import hydra
 from hydra.utils import get_original_cwd
@@ -29,15 +22,7 @@ def retrieve_batches(cfg) -> None:
     if not batch_id_list_path.is_file():
         raise FileNotFoundError(f"batch_id_list.jsonl not found: {batch_id_list_path}")
 
-    _api_key = os.environ.get("OPENAI_API_KEY")
-    if not _api_key:
-        raise RuntimeError(
-            "OPENAI_API_KEY environment variable not set.\n"
-            "Either set it in your shell with `$env:OPENAI_API_KEY = 'sk-...'` or create a `.env` file"
-            " containing `OPENAI_API_KEY=sk-...` and try again."
-        )
-
-    client = OpenAI(api_key=_api_key)  # OPENAI_API_KEY는 env에서 읽힌다고 가정
+    client = OpenAI()  # OPENAI_API_KEY는 env에서 읽힌다고 가정
 
     with batch_id_list_path.open("r", encoding="utf-8") as f:
         idx = 1

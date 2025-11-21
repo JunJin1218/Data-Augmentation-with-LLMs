@@ -1,12 +1,5 @@
 import os
 import json
-try:
-    from dotenv import load_dotenv
-
-    load_dotenv()
-except Exception:
-    pass
-
 from openai import OpenAI
 
 import hydra
@@ -15,15 +8,7 @@ from hydra.utils import to_absolute_path
 
 from prompts.utils import get_task_name
 
-_api_key = os.environ.get("OPENAI_API_KEY")
-if not _api_key:
-    raise RuntimeError(
-        "OPENAI_API_KEY environment variable not set.\n"
-        "Either set it in your shell with `$env:OPENAI_API_KEY = 'sk-...'` or create a `.env` file"
-        " containing `OPENAI_API_KEY=sk-...` and try again."
-    )
-
-client = OpenAI(api_key=_api_key)
+client = OpenAI()
 
 
 def get_sorted_batch_files(batch_input_dir: str):
@@ -50,7 +35,9 @@ def main(cfg: DictConfig):
     batch_input_dir = to_absolute_path(batch_input_dir)
 
     batch_id_list_path = to_absolute_path(
-        os.path.join("gpt", "batches", task, f"batch_id_list.jsonl")  # gpt/batches/{task}/...
+        os.path.join(
+            "gpt", "batches", task, f"batch_id_list.jsonl"
+        )  # gpt/batches/{task}/...
     )
     os.makedirs(os.path.dirname(batch_id_list_path), exist_ok=True)
 
