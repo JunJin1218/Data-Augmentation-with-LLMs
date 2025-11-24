@@ -10,4 +10,5 @@ dependencies = [
     "openai>=1.96.1",
     "tqdm>=4.67.1",
     "transformers>=4.57.1",
+    "xai-sdk>=1.4.0",
 ]
