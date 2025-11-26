@@ -88,23 +88,60 @@ def extract_pairs_from_text(text: str) -> Optional[List[Dict[str, Any]]]:
     if not text:
         return None
 
-    # --- helper: try to parse a string as JSON and return a list of pairs ---
+    # --- helper: try to parse a string as JSON and return a list of canonical pairs ---
+    def normalize_pair_obj(o: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        if not isinstance(o, dict):
+            return None
+
+        # case-insensitive key lookup
+        def get_ci(d: Dict[str, Any], key: str):
+            for k, v in d.items():
+                if k.lower() == key.lower():
+                    return v
+            return None
+
+        prem = get_ci(o, "premise")
+        hyp = get_ci(o, "hypothesis")
+        lab = get_ci(o, "label")
+
+        if isinstance(prem, str) and isinstance(hyp, str) and (isinstance(lab, int) or isinstance(lab, float) or (isinstance(lab, str) and lab.isdigit())):
+            try:
+                lab_int = int(lab)
+            except Exception:
+                return None
+            return {"Premise": prem.strip(), "Hypothesis": hyp.strip(), "Label": int(lab_int)}
+        return None
+
     def parse_candidate(s: str) -> Optional[List[Dict[str, Any]]]:
         try:
             obj = json.loads(s)
         except json.JSONDecodeError:
             return None
 
-        # Case 1: {"pairs": [ ... ]}
-        if isinstance(obj, dict) and "pairs" in obj:
-            pairs = obj["pairs"]
-            if isinstance(pairs, list):
-                return pairs
-            return None
+        # Case 1: dict with a 'pairs' key (case-insensitive)
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if k.lower() == "pairs" and isinstance(v, list):
+                    out: List[Dict[str, Any]] = []
+                    for item in v:
+                        np = normalize_pair_obj(item)
+                        if np is not None:
+                            out.append(np)
+                    return out if out else None
+
+            # Case: single object that itself contains premise/hypothesis/label
+            single = normalize_pair_obj(obj)
+            if single is not None:
+                return [single]
 
         # Case 2: top-level list [ {...}, {...}, ... ]
         if isinstance(obj, list):
-            return obj
+            out: List[Dict[str, Any]] = []
+            for item in obj:
+                np = normalize_pair_obj(item)
+                if np is not None:
+                    out.append(np)
+            return out if out else None
 
         return None
 
@@ -126,12 +163,12 @@ def extract_pairs_from_text(text: str) -> Optional[List[Dict[str, Any]]]:
             if pairs is not None:
                 return pairs
 
-    # --- 3) Embedded JSON objects with Premise/Hypothesis/Label anywhere ---
-    # Find each { ... } that mentions those keys in some order
+    # --- 3) Embedded JSON objects with premise/hypothesis/label anywhere ---
+    # Find each { ... } that mentions those keys in some order (case-insensitive)
     snippets = re.findall(
-        r'\{[^{}]*"Premise"[^{}]*"Hypothesis"[^{}]*"Label"[^{}]*\}',
+        r'\{[^{}]*"premise"[^{}]*"hypothesis"[^{}]*"label"[^{}]*\}',
         text,
-        flags=re.DOTALL,
+        flags=re.DOTALL | re.IGNORECASE,
     )
 
     parsed_pairs: List[Dict[str, Any]] = []
@@ -142,20 +179,9 @@ def extract_pairs_from_text(text: str) -> Optional[List[Dict[str, Any]]]:
             obj = json.loads(snippet_no_comments)
         except json.JSONDecodeError:
             continue
-        if not isinstance(obj, dict):
-            continue
-
-        prem = obj.get("Premise")
-        hyp = obj.get("Hypothesis")
-        lab = obj.get("Label")
-        if (
-            isinstance(prem, str)
-            and isinstance(hyp, str)
-            and (isinstance(lab, int) or isinstance(lab, float))
-        ):
-            parsed_pairs.append(
-                {"Premise": prem.strip(), "Hypothesis": hyp.strip(), "Label": int(lab)}
-            )
+        np = normalize_pair_obj(obj)
+        if np is not None:
+            parsed_pairs.append(np)
 
     if parsed_pairs:
         return parsed_pairs

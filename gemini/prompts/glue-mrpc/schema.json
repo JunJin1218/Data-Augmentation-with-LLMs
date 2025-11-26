@@ -1,0 +1,43 @@
+{
+    "format": {
+        "type": "json_schema",
+        "name": "mrpc_synthetic_data",
+        "strict": true,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "pairs": {
+                    "type": "array",
+                    "description": "A list of text pairs and their equivalence judgments.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "Text1": {
+                                "type": "string",
+                                "description": "The First Text input"
+                            },
+                            "Text2": {
+                                "type": "string",
+                                "description": "The Second Text input"
+                            },
+                            "Equivalence": {
+                                "type": "boolean",
+                                "description": "Whether the two texts express the same or nearly the same information."
+                            }
+                        },
+                        "required": [
+                            "Text1",
+                            "Text2",
+                            "Equivalence"
+                        ],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": [
+                "pairs"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

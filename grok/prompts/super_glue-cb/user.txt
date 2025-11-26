@@ -1,10 +1,14 @@
-You are given several examples of labeled sentence pairs.
+You are given a request to generate N synthetic NLI examples.
 
-Each pair follows this schema:
-{
-  "Premise": "<sentence 1>",
-  "Hypothesis": "<sentence 2>",
-  "Label": The NLI judgment: 0 = entailment, 1 = contradiction, 2 = neutral.
-}
+Output format (exact JSONL): one JSON object per line, with exactly these lowercase keys: `"premise"`, `"hypothesis"`, `"label"`.
 
-Here are example few-shot samples:
+Valid examples (each line is one JSON object):
+{"premise":"The committee concluded that the budget shortfall would delay the project by several months.","hypothesis":"The project will likely be completed on schedule.","label":1}
+{"premise":"After extensive testing, the composite material proved unsuitable for the aircraft's primary structure.","hypothesis":"The composite material was ideal for the aircraft's primary structure.","label":1}
+{"premise":"The archaeological team found pottery fragments dating to the Bronze Age, suggesting trade activity at the site.","hypothesis":"The team discovered evidence of ancient trading activity.","label":0}
+
+Now generate N new examples and return exactly N lines. Each line must be one JSON object with keys `premise`,`hypothesis`,`label` only. Do not include any extra text or commentary.
+
+Important: If any provided example or the source data contains dialogue labeled `A:`/`B:`, convert that dialogue into a single narrative sentence and DO NOT include any `A:`/`B:` prefixes in the output.
+ 
+ CRITICAL: Ignore the formatting of any few-shot example blocks that appear after this instruction (for example, lines beginning with "Example 1:" or containing "Premise:"/"Hypothesis:"). Do NOT copy those headers or labels into your output — produce only the JSON objects as specified above.

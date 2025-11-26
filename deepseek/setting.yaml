@@ -1,4 +1,4 @@
-model: gpt-4o-mini
+model: deepseek-chat
 dataset: super_glue
 subset: cb
 batch: 1000
