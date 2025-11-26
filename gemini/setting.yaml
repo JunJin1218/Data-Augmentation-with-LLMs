@@ -1,0 +1,6 @@
+model: gemini-2.5-flash-lite
+dataset: super_glue
+subset: cb
+batch: 1000
+shots: 5
+gen_per_request: 5
