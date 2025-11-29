@@ -7,4 +7,8 @@ Each pair follows this schema:
   "Label": The NLI judgment: 0 = entailment, 1 = contradiction, 2 = neutral.
 }
 
+<<<<<<< HEAD
 Here are example few-shot samples:
+=======
+Here are example few-shot samples:
+>>>>>>> e973582a3b4c6645cef717bff0290741e3182fd0
