@@ -1,0 +1,41 @@
+{
+  "format": {
+    "type": "json_schema",
+    "name": "multirc_synthetic_data",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "A list of MultiRC-style instances.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Passage": {"type": "string", "description": "Short coherent paragraph providing evidence."},
+              "Question": {"type": "string", "description": "Specific question answerable from the passage."},
+              "Answers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Text": {"type": "string"},
+                    "Label": {"type": "number", "description": "1 if correct, 0 if incorrect"}
+                  },
+                  "required": ["Text", "Label"],
+                  "additionalProperties": false
+                },
+                "minItems": 2,
+                "maxItems": 6
+              }
+            },
+            "required": ["Passage", "Question", "Answers"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["items"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "pairs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "passage": { "type": "string" },
+          "query": { "type": "string" },
+          "entities": { "type": "array", "items": { "type": "string" } },
+          "answers": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["passage", "query", "entities", "answers"]
+      }
+    }
+  },
+  "required": ["pairs"]
+}

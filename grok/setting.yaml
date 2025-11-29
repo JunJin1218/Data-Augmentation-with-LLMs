@@ -1,6 +1,6 @@
 model: grok-3-mini
 dataset: super_glue
 subset: cb
-batch: 1000
-shots: 5
-gen_per_request: 5
+batch: 2500
+shots: 10
+gen_per_request: 7

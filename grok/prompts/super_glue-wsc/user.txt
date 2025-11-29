@@ -1,0 +1,11 @@
+You are given several examples of labeled WSC instances.
+
+Each instance follows this schema:
+{
+  "Text": "<full sentence with an ambiguous pronoun>",
+  "Span1Text": "<the pronoun>",
+  "Span2Text": "<candidate antecedent>",
+  "Label": 1 if Span1Text refers to Span2Text in context, else 0
+}
+
+Here are example few-shot samples:
