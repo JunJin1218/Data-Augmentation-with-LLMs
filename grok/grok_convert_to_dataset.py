@@ -1059,6 +1059,37 @@ def pairs_to_examples(task: str, pairs: List[Dict[str, Any]]) -> List[Dict[str, 
     return converter(pairs)
 
 
+def group_multirc_examples(examples: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Group flattened MultiRC examples into one record per (passage, question).
+
+    Input items (flattened): {"passage", "question", "answer", "label"}
+    Output items (grouped): {"passage", "question", "answers": [{"text", "label"}, ...], "num_answers"}
+    """
+    groups: Dict[tuple, List[Dict[str, Any]]] = {}
+    for ex in examples:
+        p = ex.get("passage")
+        q = ex.get("question")
+        a = ex.get("answer")
+        lab = ex.get("label")
+        if not (isinstance(p, str) and isinstance(q, str) and isinstance(a, str) and lab is not None):
+            # skip malformed entries
+            continue
+        key = (p, q)
+        if key not in groups:
+            groups[key] = []
+        groups[key].append({"text": a, "label": int(lab)})
+
+    grouped: List[Dict[str, Any]] = []
+    for (p, q), ans_list in groups.items():
+        grouped.append({
+            "passage": p,
+            "question": q,
+            "answers": ans_list,
+            "num_answers": len(ans_list),
+        })
+    return grouped
+
+
 def load_pairs_from_batch_output(path: Path, task: str) -> List[Dict[str, Any]]:
     """
     Read a batchoutput_*.jsonl file and convert all parsed pairs
@@ -1183,6 +1214,12 @@ def main(cfg: DictConfig):
         all_examples.extend(examples)
 
     print(f"[INFO] Total collected {len(all_examples)} examples. Writing JSONL...")
+
+    # If MultiRC, collapse into one record per (passage, question)
+    if "multirc" in task:
+        before = len(all_examples)
+        all_examples = group_multirc_examples(all_examples)
+        print(f"[INFO] Grouped MultiRC examples: {before} flattened → {len(all_examples)} grouped records.")
 
     # Write to both locations for backward compatibility
     for target in (output_path, output_path_generated):

@@ -41,6 +41,11 @@ Packages are pinned in pyproject.toml; uv run resolves them automatically.
 
   With gen_per_request: 5, each request asks for 5 new examples
 
+- **Requests** ≈ `ceil(train_size / shots)`
+  - E.g. multirc has 27k train size
+- **Outputs** ≈ `requests × gen_per_request`
+- **Batch files** ≈ `ceil(requests / batch)`
+
 **Potential problem**: If some of the generation does not work as expected, it may be because the sdk have not been added on your end locally
 
 For OpenAI: `uv add openai`
@@ -51,12 +56,16 @@ For gemini: `uv add google-genai`
 
 ## Current Benchmarks and Tasks supported:
 
-![superGLUE Tasks](superGLUE_Tasks.jpg)
-
 - [SuperGLUE](https://super.gluebenchmark.com/tasks/)
+
+- grok-3-mini (superGLUE task)
   - CB
-  - RTE (testing)
-  - COPA, WSC, WiC, BoolQ, MultiRC
+  - RTE
+  - COPA
+  - WSC
+  - WiC
+  - BoolQ
+  - MultiRC (testing)
 
 ---
 
@@ -87,9 +96,21 @@ Use these four commands for any supported task. Replace `<dataset>` and `<subset
 
 ```
 uv run python "grok/grok_prompt.py" dataset=<dataset> subset=<subset>
+```
+
+```
 uv run python "grok/grok_generate.py" dataset=<dataset> subset=<subset>
+```
+
+```
 uv run python "grok/grok_retreive.py" dataset=<dataset> subset=<subset>
+
+```
+
+```
+
 uv run python "grok/grok_convert_to_dataset.py" dataset=<dataset> subset=<subset>
+
 ```
 
  - For SuperGLUE on HF, use `dataset=super_glue` and one of:
@@ -136,3 +157,4 @@ uv run python "grok/grok_convert_to_dataset.py" dataset=<dataset> subset=<subset
 Diagnostics (no train split):
 – **AX‑b (Broadcoverage Diagnostics):** Probes lexical semantics, predicate‑argument structure, logic, coreference, and world knowledge. Diagnostic reporting only; excluded from aggregate score.
 – **AX‑g (Winogender Diagnostics):** Bias/robustness probe for coreference with gendered/neutral occupations. Diagnostic only; excluded from aggregate score.
+```
