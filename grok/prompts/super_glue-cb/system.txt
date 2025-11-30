@@ -13,4 +13,3 @@ Your behavior:
 - Ensure creativity and factual plausibility without copying existing CB or other known benchmark examples.
 - Do not repeat or trivially paraphrase any previously generated example text.
 - Maintain strict adherence to the requested JSON schema (Premise, Hypothesis, Label inside each item, wrapped in a top-level “pairs” array).
-
