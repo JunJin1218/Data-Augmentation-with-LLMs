@@ -1,0 +1,28 @@
+{
+  "format": {
+    "type": "json_schema",
+    "name": "rte_synthetic_data",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "pairs": {
+          "type": "array",
+          "description": "A list of NLI examples following the SuperGLUE RTE task structure.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Premise": {"type": "string", "description": "The premise sentence."},
+              "Hypothesis": {"type": "string", "description": "The hypothesis sentence."},
+              "Label": {"type": "number", "description": "The NLI judgment: 0 = entailment, 1 = not_entailment."}
+            },
+            "required": ["Premise", "Hypothesis", "Label"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["pairs"],
+      "additionalProperties": false
+    }
+  }
+}

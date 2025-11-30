@@ -1,0 +1,29 @@
+{
+  "format": {
+    "type": "json_schema",
+    "name": "wsc_synthetic_data",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "A list of WSC-style instances.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Text": {"type": "string", "description": "The full sentence."},
+              "Span1Text": {"type": "string", "description": "The ambiguous pronoun."},
+              "Span2Text": {"type": "string", "description": "The candidate antecedent."},
+              "Label": {"type": "number", "description": "1 if Span1Text refers to Span2Text, else 0."}
+            },
+            "required": ["Text", "Span1Text", "Span2Text", "Label"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["items"],
+      "additionalProperties": false
+    }
+  }
+}

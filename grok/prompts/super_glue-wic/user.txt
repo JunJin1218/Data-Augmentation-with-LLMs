@@ -1,0 +1,11 @@
+You are given several examples of labeled WiC (Word-in-Context) instances.
+
+Each instance follows this schema:
+{
+  "Word": "<target word>",
+  "Sentence1": "<sentence containing the word>",
+  "Sentence2": "<another sentence containing the same word>",
+  "Label": 1 if the word has the SAME meaning in both sentences, 0 if DIFFERENT
+}
+
+Here are example few-shot samples:

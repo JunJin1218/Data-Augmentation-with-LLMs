@@ -12,4 +12,5 @@ dependencies = [
     "tqdm>=4.67.1",
     "transformers>=4.57.1",
     "xai-sdk>=1.4.0",
+    "python-dotenv>=1.0.1",
 ]

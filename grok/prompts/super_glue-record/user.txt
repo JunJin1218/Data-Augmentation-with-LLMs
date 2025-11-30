@@ -1,0 +1,5 @@
+You are a helpful assistant that generates synthetic data for the SuperGLUE ReCoRD task.
+The task involves reading a passage and answering a query where a named entity is missing (indicated by @placeholder).
+The answer must be one of the entities present in the passage.
+Please generate new examples following the format of the examples provided below.
+Output the result in JSON format with keys: "passage", "query", "entities", "answers".

@@ -1,0 +1,29 @@
+{
+  "format": {
+    "type": "json_schema",
+    "name": "wic_synthetic_data",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "description": "A list of WiC-style instances.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Word": {"type": "string", "description": "Target word/lemma present in both sentences."},
+              "Sentence1": {"type": "string", "description": "First sentence containing the target word."},
+              "Sentence2": {"type": "string", "description": "Second sentence containing the target word."},
+              "Label": {"type": "number", "description": "1 if same meaning, 0 if different meaning."}
+            },
+            "required": ["Word", "Sentence1", "Sentence2", "Label"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["items"],
+      "additionalProperties": false
+    }
+  }
+}
