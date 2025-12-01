@@ -1,0 +1,12 @@
+You are given several examples of labeled COPA instances.
+
+Each instance follows this schema:
+{
+  "Premise": "<context sentence>",
+  "Choice1": "<candidate sentence 1>",
+  "Choice2": "<candidate sentence 2>",
+  "Question": "cause" | "effect",
+  "Label": 0 if Choice1 is more plausible, 1 if Choice2 is more plausible
+}
+
+Here are example few-shot samples:

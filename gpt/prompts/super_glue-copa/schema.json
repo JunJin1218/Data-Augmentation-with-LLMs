@@ -1,0 +1,30 @@
+{
+    "format": {
+        "type": "json_schema",
+        "name": "copa_synthetic_data",
+        "strict": true,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "pairs": {
+                    "type": "array",
+                    "description": "A list of COPA-style instances.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "premise": { "type": "string", "description": "The context sentence." },
+                            "choice1": { "type": "string", "description": "Candidate sentence 1." },
+                            "choice2": { "type": "string", "description": "Candidate sentence 2." },
+                            "question": { "type": "string", "enum": ["cause", "effect"], "description": "Cause or effect question." },
+                            "label": { "type": "number", "enum": [0, 1], "description": "0 if Choice1, 1 if Choice2." }
+                        },
+                        "required": ["premise", "choice1", "choice2", "question", "label"],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": ["pairs"],
+            "additionalProperties": false
+        }
+    }
+}

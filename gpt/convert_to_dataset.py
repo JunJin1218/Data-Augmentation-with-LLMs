@@ -65,16 +65,16 @@ def convert_glue_mrpc(pairs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         )
     return examples
 
-
+# ---- CB ----
 def convert_super_glue_cb(pairs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Convert schema.json 'pairs' to SuperGLUE CB-style examples.
     """
     examples: List[Dict[str, Any]] = []
     for pair in pairs:
-        premise = pair.get("Premise")
-        hypothesis = pair.get("Hypothesis")
-        label = pair.get("Label")
+        premise = pair.get("premise")
+        hypothesis = pair.get("hypothesis")
+        label = pair.get("label")
         if premise is None or hypothesis is None or label is None:
             continue
         examples.append(
@@ -86,6 +86,183 @@ def convert_super_glue_cb(pairs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         )
     return examples
 
+# ---- BoolQ ----
+def convert_super_glue_boolq(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert to BoolQ-style.
+    Expected keys per item: passage (str), question (str), label (bool/int)
+    """
+    out: List[Dict[str, Any]] = []
+    for it in items:
+        passage = it.get("passage")
+        question = it.get("question")
+        label = it.get("label")
+        if passage is None or question is None or label is None:
+            continue
+        out.append(
+            {
+                "passage": passage,
+                "question": question,
+                "label": int(label),  # ensure 0/1
+            }
+        )
+    return out
+
+
+# ---- COPA ----
+def convert_super_glue_copa(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert to COPA-style.
+    Expected keys per item: premise, choice1, choice2, question ("cause"|"effect"), label (0|1)
+    """
+    out: List[Dict[str, Any]] = []
+    for it in items:
+        premise = it.get("premise")
+        c1 = it.get("choice1")
+        c2 = it.get("choice2")
+        q = it.get("question")
+        label = it.get("label")
+        if None in (premise, c1, c2, q, label):
+            continue
+        out.append(
+            {
+                "premise": premise,
+                "choice1": c1,
+                "choice2": c2,
+                "question": q,
+                "label": int(label),
+            }
+        )
+    return out
+
+
+# ---- MultiRC ----
+def convert_super_glue_multirc(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert to MultiRC-style.
+    Expected keys per item:
+      - passage (str)
+      - question (str)
+      - answer: List[{"text": str, "label": 0|1 or bool}]
+    """
+    out: List[Dict[str, Any]] = []
+    for it in items:
+        para = it.get("paragraph")
+        q    = it.get("question")
+        ans  = it.get("answer")
+        lb   = it.get("label")
+        if None in (para, q, ans, lb):
+            continue
+        out.append({
+            "paragraph": str(para),
+            "question":  str(q),
+            "answer":    str(ans),
+            "label":     int(lb),
+        })
+    return out
+
+
+# ---- RTE ----
+def convert_super_glue_rte(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert to RTE-style.
+    Expected keys per item: premise, hypothesis, label (int; HF RTE는 0/1)
+    """
+    out: List[Dict[str, Any]] = []
+    for it in items:
+        premise = it.get("premise")
+        hypothesis = it.get("hypothesis")
+        label = it.get("label")
+        if premise is None or hypothesis is None or label is None:
+            continue
+        out.append({"premise": premise, "hypothesis": hypothesis, "label": int(label)})
+    return out
+
+
+# ---- WiC ----
+def convert_super_glue_wic(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert to WiC-style.
+    Expected keys per item:
+      - sentence1, sentence2, word
+      - (optional) start1, end1, start2, end2
+      - label (bool/int)
+    """
+    out: List[Dict[str, Any]] = []
+    for it in items:
+        s1 = it.get("sentence1")
+        s2 = it.get("sentence2")
+        word = it.get("word")
+        label = it.get("label")
+        if s1 is None or s2 is None or word is None or label is None:
+            continue
+        ex = {
+            "sentence1": s1,
+            "sentence2": s2,
+            "word": word,
+            "label": int(label),
+        }
+        # 위치 정보가 있으면 유지
+        for k in ("start1", "end1", "start2", "end2"):
+            if k in it:
+                ex[k] = it[k]
+        out.append(ex)
+    return out
+
+
+# ---- WSC ----
+def convert_super_glue_wsc(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert to WSC-style (SuperGLUE WSC).
+    Expected keys per item:
+      - text
+      - span1_text, span1_index
+      - span2_text, span2_index
+      - label (bool/int)
+    """
+    out: List[Dict[str, Any]] = []
+    for it in items:
+        text = it.get("text")
+        s1t = it.get("span1_text")
+        s2t = it.get("span2_text")
+        label = it.get("label")
+        if None in (text, s1t, s2t, label):
+            continue
+        out.append(
+            {
+                "text": text,
+                "span1_text": s1t,
+                "span2_text": s2t,
+                "label": int(label),
+            }
+        )
+    return out
+
+
+# ---- ReCoRD ----
+def convert_super_glue_record(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert to ReCoRD-style.
+    Expected keys per item:
+      - passage (str), query (str with @placeholder), entities (List[str]), answers (List[str])
+    """
+    out: List[Dict[str, Any]] = []
+    for it in items:
+        passage = it.get("passage")
+        query = it.get("query")
+        entities = it.get("entities")
+        answers = it.get("answers")
+        if passage is None or query is None or not isinstance(entities, list) or not isinstance(answers, list):
+            continue
+        out.append(
+            {
+                "passage": passage,
+                "query": query,
+                "entities": list(entities),
+                "answers": list(answers),
+            }
+        )
+    return out
 
 # 여기에 태스크별 컨버터를 계속 추가하면 됨
 # def convert_super_glue_rte(...): ...
@@ -95,9 +272,15 @@ def convert_super_glue_cb(pairs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 TASK_CONVERTERS: Dict[str, Callable[[List[Dict[str, Any]]], List[Dict[str, Any]]]] = {
     "glue-mrpc": convert_glue_mrpc,
     "super_glue-cb": convert_super_glue_cb,
-    # "super_glue-rte": convert_super_glue_rte,
-    # "glue-sst2": convert_glue_sst2,
+    "super_glue-boolq": convert_super_glue_boolq,
+    "super_glue-copa": convert_super_glue_copa,
+    "super_glue-multirc": convert_super_glue_multirc,
+    "super_glue-rte": convert_super_glue_rte,
+    "super_glue-wic": convert_super_glue_wic,
+    "super_glue-wsc": convert_super_glue_wsc,
+    "super_glue-record": convert_super_glue_record,
 }
+
 
 
 def pairs_to_examples(task: str, pairs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:

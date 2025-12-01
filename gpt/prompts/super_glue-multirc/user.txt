@@ -1,0 +1,11 @@
+You are given several examples of labeled MultiRC instances.
+
+Each instance follows this schema:
+{
+  "Paragraph": "<short coherent paragraph>",
+  "Question": "<specific question answerable from the paragraph>",
+  "Answer": "<single candidate answer to the question>",
+  "Label": 1 if this answer is correct for the question, 0 if it is incorrect
+}
+
+Here are example few-shot samples:

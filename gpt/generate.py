@@ -10,12 +10,16 @@ from prompts.utils import get_task_name
 
 client = OpenAI()
 
+ACTUAL = "batchinput_"
+TEST = "batch_test"
+START_FROM = 4
+generation_idx = 1
 
 def get_sorted_batch_files(batch_input_dir: str):
     files = [
         f
         for f in os.listdir(batch_input_dir)
-        if f.startswith("batchinput_") and f.endswith(".jsonl")
+        if f.startswith(ACTUAL) and f.endswith(".jsonl")
     ]
     return sorted(files)
 
@@ -28,6 +32,7 @@ def record_batch_id(batch_id_list_path: str, filename: str, batch_id: str):
 
 @hydra.main(version_base=None, config_path=".", config_name="setting")
 def main(cfg: DictConfig):
+    global generation_idx
     task = get_task_name(cfg)
 
     # Convert to absolute path because Hydra changes the working directory
@@ -40,6 +45,9 @@ def main(cfg: DictConfig):
     os.makedirs(os.path.dirname(batch_id_list_path), exist_ok=True)
 
     for filename in get_sorted_batch_files(batch_input_dir):
+        if (generation_idx < START_FROM) and (cfg.subset == "multirc"):
+            generation_idx += 1
+            continue
         filepath = os.path.join(batch_input_dir, filename)
 
         try:

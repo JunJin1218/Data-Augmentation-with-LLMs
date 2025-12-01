@@ -1,0 +1,10 @@
+You are given several examples of labeled BoolQ instances.
+
+Each instance follows this schema:
+{
+  "Passage": "<short factual paragraph>",
+  "Question": "<yes/no question answerable from the passage>",
+  "Label": 1 if the correct answer is YES/TRUE, 0 if NO/FALSE
+}
+
+Here are example few-shot samples:

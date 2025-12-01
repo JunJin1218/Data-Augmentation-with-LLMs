@@ -1,0 +1,28 @@
+{
+    "format": {
+        "type": "json_schema",
+        "name": "boolq_synthetic_data",
+        "strict": true,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "pairs": {
+                    "type": "array",
+                    "description": "A list of BoolQ-style instances.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "passage": { "type": "string", "description": "Short factual paragraph that contains the answer." },
+                            "question": { "type": "string", "description": "Yes/No question answerable from the passage." },
+                            "label": { "type": "number", "enum": [0, 1], "description": "1 if YES/TRUE, 0 if NO/FALSE." }
+                        },
+                        "required": ["passage", "question", "label"],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": ["pairs"],
+            "additionalProperties": false
+        }
+    }
+}

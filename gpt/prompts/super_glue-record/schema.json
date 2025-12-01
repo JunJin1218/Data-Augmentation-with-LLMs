@@ -1,0 +1,67 @@
+{
+    "format": {
+        "type": "json_schema",
+        "name": "record_synthetic_data",
+        "strict": true,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "pairs": {
+                    "type": "array",
+                    "description": "A list of ReCoRD-style instances (flattened HF format, idx removed).",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "passage": {
+                                "type": "string",
+                                "description": "The passage text."
+                            },
+                            "query": {
+                                "type": "string",
+                                "description": "A cloze-style query containing @placeholder."
+                            },
+                            "entities": {
+                                "type": "array",
+                                "description": "List of entity strings appearing in the passage.",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "entity_spans": {
+                                "type": "object",
+                                "description": "Span information for all entity occurrences in the passage.",
+                                "properties": {
+                                    "start": {
+                                        "type": "array",
+                                        "items": { "type": "number" }
+                                    },
+                                    "end": {
+                                        "type": "array",
+                                        "items": { "type": "number" }
+                                    },
+                                    "text": {
+                                        "type": "array",
+                                        "items": { "type": "string" }
+                                    }
+                                },
+                                "required": ["start", "end", "text"],
+                                "additionalProperties": false
+                            },
+                            "answers": {
+                                "type": "array",
+                                "description": "List of correct answer entities (subset of Entities).",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "required": ["passage", "query", "entities", "entity_spans", "answers"],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": ["pairs"],
+            "additionalProperties": false
+        }
+    }
+}

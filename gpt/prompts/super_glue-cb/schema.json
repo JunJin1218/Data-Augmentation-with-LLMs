@@ -12,23 +12,24 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "Premise": {
+                            "premise": {
                                 "type": "string",
                                 "description": "The original statement (context) provided in the CB dataset."
                             },
-                            "Hypothesis": {
+                            "hypothesis": {
                                 "type": "string",
                                 "description": "The hypothesis whose truth must be inferred from the premise."
                             },
-                            "Label": {
+                            "label": {
                                 "type": "number",
+                                "enum": [0, 1, 2],
                                 "description": "The NLI judgment: 0 = entailment, 1 = contradiction, 2 = neutral."
                             }
                         },
                         "required": [
-                            "Premise",
-                            "Hypothesis",
-                            "Label"
+                            "premise",
+                            "hypothesis",
+                            "label"
                         ],
                         "additionalProperties": false
                     }
