@@ -1,6 +1,0 @@
-model: grok-3-mini
-dataset: super_glue
-subset: multirc
-batch: 3000
-shots: 20
-gen_per_request: 20

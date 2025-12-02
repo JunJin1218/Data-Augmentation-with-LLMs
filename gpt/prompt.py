@@ -63,6 +63,7 @@ def main(cfg: DictConfig):
     os.makedirs(output_dir, exist_ok=True)
 
     ds = load_data(cfg)
+    ds.shuffle(seed=cfg.seed) # data shuffle
     system_tmpl, user_tmpl = load_prompts(cfg)
     schema = load_schema(cfg)
 
