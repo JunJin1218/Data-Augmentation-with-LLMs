@@ -1,30 +1,30 @@
 {
-  "format": {
-    "type": "json_schema",
-    "name": "copa_synthetic_data",
-    "strict": true,
-    "schema": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "description": "A list of COPA-style instances.",
-          "items": {
+    "format": {
+        "type": "json_schema",
+        "name": "copa_synthetic_data",
+        "strict": true,
+        "schema": {
             "type": "object",
             "properties": {
-              "Premise": {"type": "string", "description": "The context sentence."},
-              "Choice1": {"type": "string", "description": "Candidate sentence 1."},
-              "Choice2": {"type": "string", "description": "Candidate sentence 2."},
-              "Question": {"type": "string", "enum": ["cause", "effect"], "description": "Cause or effect question."},
-              "Label": {"type": "number", "description": "0 if Choice1, 1 if Choice2."}
+                "pairs": {
+                    "type": "array",
+                    "description": "A list of COPA-style instances.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "premise": { "type": "string", "description": "The context sentence." },
+                            "choice1": { "type": "string", "description": "Candidate sentence 1." },
+                            "choice2": { "type": "string", "description": "Candidate sentence 2." },
+                            "question": { "type": "string", "enum": ["cause", "effect"], "description": "Cause or effect question." },
+                            "label": { "type": "number", "enum": [0, 1], "description": "0 if Choice1, 1 if Choice2." }
+                        },
+                        "required": ["premise", "choice1", "choice2", "question", "label"],
+                        "additionalProperties": false
+                    }
+                }
             },
-            "required": ["Premise", "Choice1", "Choice2", "Question", "Label"],
+            "required": ["pairs"],
             "additionalProperties": false
-          }
         }
-      },
-      "required": ["items"],
-      "additionalProperties": false
     }
-  }
 }

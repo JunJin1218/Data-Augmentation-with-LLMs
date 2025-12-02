@@ -1,29 +1,29 @@
 {
-  "format": {
-    "type": "json_schema",
-    "name": "wsc_synthetic_data",
-    "strict": true,
-    "schema": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "description": "A list of WSC-style instances.",
-          "items": {
+    "format": {
+        "type": "json_schema",
+        "name": "wsc_synthetic_data",
+        "strict": true,
+        "schema": {
             "type": "object",
             "properties": {
-              "Text": {"type": "string", "description": "The full sentence."},
-              "Span1Text": {"type": "string", "description": "The ambiguous pronoun."},
-              "Span2Text": {"type": "string", "description": "The candidate antecedent."},
-              "Label": {"type": "number", "description": "1 if Span1Text refers to Span2Text, else 0."}
+                "pairs": {
+                    "type": "array",
+                    "description": "A list of WSC-style instances.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "text": { "type": "string", "description": "The full sentence." },
+                            "span1_text": { "type": "string", "description": "The ambiguous pronoun." },
+                            "span2_text": { "type": "string", "description": "The candidate antecedent." },
+                            "label": { "type": "number", "enum": [0, 1], "description": "1 if Span1Text refers to Span2Text, else 0." }
+                        },
+                        "required": ["text", "span1_text", "span2_text", "label"],
+                        "additionalProperties": false
+                    }
+                }
             },
-            "required": ["Text", "Span1Text", "Span2Text", "Label"],
+            "required": ["pairs"],
             "additionalProperties": false
-          }
         }
-      },
-      "required": ["items"],
-      "additionalProperties": false
     }
-  }
 }
