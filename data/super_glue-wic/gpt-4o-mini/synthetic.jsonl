@@ -1,0 +1,30 @@
+{"sentence1": "The room is filled with light during the day.", "sentence2": "She tried to light the candle in the dark.", "word": "light", "label": 0, "start1": 26, "end1": 31, "start2": 20, "end2": 25}
+{"sentence1": "She has found a good balance between work and life.", "sentence2": "The gymnast needs to maintain her balance while performing.", "word": "balance", "label": 1, "start1": 28, "end1": 35, "start2": 32, "end2": 39}
+{"sentence1": "The flowers begin to bloom in spring.", "sentence2": "He decided to spring for a new car this year.", "word": "spring", "label": 0, "start1": 29, "end1": 34, "start2": 21, "end2": 26}
+{"sentence1": "The festival featured a popular rock band.", "sentence2": "She will join the community band next month.", "word": "band", "label": 1, "start1": 40, "end1": 44, "start2": 36, "end2": 40}
+{"sentence1": "She went to the bank to withdraw some cash.", "sentence2": "He has a bank of knowledge about history.", "word": "bank", "label": 0, "start1": 26, "end1": 30, "start2": 18, "end2": 22}
+{"sentence1": "The light in the room was too bright to work comfortably.", "sentence2": "She decided to light a candle for the dinner ambiance.", "word": "light", "label": 0, "start1": 4, "end1": 9, "start2": 22, "end2": 26}
+{"sentence1": "You should check your answers before submitting.", "sentence2": "I need to check my bank balance after the purchase.", "word": "check", "label": 1, "start1": 15, "end1": 20, "start2": 12, "end2": 17}
+{"sentence1": "The bark of the tree was rough and textured.", "sentence2": "The dog would bark loudly at any passerby.", "word": "bark", "label": 0, "start1": 4, "end1": 8, "start2": 15, "end2": 19}
+{"sentence1": "The children went outside to play in the park.", "sentence2": "He had a chance to play the lead role in the upcoming movie.", "word": "play", "label": 1, "start1": 34, "end1": 38, "start2": 23, "end2": 27}
+{"sentence1": "The cherry trees bloom beautifully in spring.", "sentence2": "She felt her confidence begin to bloom with every compliment.", "word": "bloom", "label": 0, "start1": 24, "end1": 29, "start2": 41, "end2": 46}
+{"sentence1": "She turned on the light in the dark room.", "sentence2": "The light from the stars is beautiful tonight.", "word": "light", "label": 0, "start1": 24, "end1": 29, "start2": 4, "end2": 9}
+{"sentence1": "The zookeeper was excited to see the seal swim.", "sentence2": "They need to seal the envelope before mailing it.", "word": "seal", "label": 0, "start1": 35, "end1": 39, "start2": 18, "end2": 22}
+{"sentence1": "The tree's bark is rough and textured.", "sentence2": "The dog's bark was loud and alarming.", "word": "bark", "label": 0, "start1": 15, "end1": 19, "start2": 15, "end2": 19}
+{"sentence1": "I need to check the document for errors.", "sentence2": "He wrote a check for the groceries.", "word": "check", "label": 0, "start1": 20, "end1": 25, "start2": 18, "end2": 23}
+{"sentence1": "I love watching the flowers bloom in spring.", "sentence2": "The old car has a broken spring in the suspension.", "word": "spring", "label": 0, "start1": 34, "end1": 39, "start2": 27, "end2": 32}
+{"sentence1": "The room was filled with light from the large windows.", "sentence2": "She carries a light backpack for her hike.", "word": "light", "label": 0, "start1": 24, "end1": 29, "start2": 16, "end2": 21}
+{"sentence1": "The government decided to seal the documents for confidentiality.", "sentence2": "I saw a seal swimming near the shore.", "word": "seal", "label": 0, "start1": 28, "end1": 33, "start2": 18, "end2": 22}
+{"sentence1": "Children love to play outside with their friends.", "sentence2": "The play was directed by a famous artist.", "word": "play", "label": 0, "start1": 18, "end1": 22, "start2": 4, "end2": 8}
+{"sentence1": "She wore a diamond ring on her finger.", "sentence2": "The bell began to ring as the ceremony started.", "word": "ring", "label": 0, "start1": 24, "end1": 28, "start2": 20, "end2": 24}
+{"sentence1": "The current situation requires immediate attention.", "sentence2": "He is the current champion in the tournament.", "word": "current", "label": 1, "start1": 7, "end1": 14, "start2": 12, "end2": 19}
+{"sentence1": "The room was filled with bright light.", "sentence2": "He decided to travel light on his vacation.", "word": "light", "label": 0, "start1": 29, "end1": 34, "start2": 29, "end2": 33}
+{"sentence1": "I love to watch documentaries.", "sentence2": "He wore a vintage watch on his wrist.", "word": "watch", "label": 0, "start1": 10, "end1": 15, "start2": 25, "end2": 30}
+{"sentence1": "The bat flew out of the cave at dusk.", "sentence2": "He swung the bat and hit a home run.", "word": "bat", "label": 0, "start1": 4, "end1": 7, "start2": 18, "end2": 21}
+{"sentence1": "Please check your answers before submitting.", "sentence2": "He wrote a check for the payment.", "word": "check", "label": 0, "start1": 6, "end1": 11, "start2": 10, "end2": 15}
+{"sentence1": "She wore a diamond ring on her finger.", "sentence2": "The phone began to ring unexpectedly.", "word": "ring", "label": 0, "start1": 24, "end1": 28, "start2": 21, "end2": 25}
+{"sentence1": "I need to go to the bank to withdraw some money.", "sentence2": "The riverbank was covered in beautiful wildflowers.", "word": "bank", "label": 0, "start1": 24, "end1": 28, "start2": 4, "end2": 10}
+{"sentence1": "She turned on the light to read her book.", "sentence2": "He is light on his feet, making him a great dancer.", "word": "light", "label": 0, "start1": 22, "end1": 27, "start2": 16, "end2": 21}
+{"sentence1": "The seal clapped its flippers for the audience.", "sentence2": "He decided to seal the envelope before mailing it.", "word": "seal", "label": 0, "start1": 4, "end1": 8, "start2": 27, "end2": 31}
+{"sentence1": "The dog will bark loudly when it sees strangers.", "sentence2": "The bark of the tree is rough and thick.", "word": "bark", "label": 0, "start1": 11, "end1": 15, "start2": 4, "end2": 8}
+{"sentence1": "We had strawberry jam on our toast this morning.", "sentence2": "He was stuck in a traffic jam for over an hour.", "word": "jam", "label": 0, "start1": 23, "end1": 26, "start2": 24, "end2": 27}
