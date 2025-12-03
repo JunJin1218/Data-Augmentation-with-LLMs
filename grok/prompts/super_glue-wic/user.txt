@@ -3,8 +3,12 @@ You are given several examples of labeled WiC (Word-in-Context) instances.
 Each instance follows this schema:
 {
   "Word": "<target word>",
-  "Sentence1": "<sentence containing the word>",
-  "Sentence2": "<another sentence containing the same word>",
+  "Sentence1": "<sentence containing the word exactly once>",
+  "Sentence2": "<another sentence containing the same word exactly once>",
+  "Start1": <0-indexed character index where the word begins in Sentence1>,
+  "End1": <0-indexed character index where the word ends in Sentence1 (exclusive)>,
+  "Start2": <0-indexed character index where the word begins in Sentence2>,
+  "End2": <0-indexed character index where the word ends in Sentence2 (exclusive)>,
   "Label": 1 if the word has the SAME meaning in both sentences, 0 if DIFFERENT
 }
 

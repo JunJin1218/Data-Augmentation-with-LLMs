@@ -2,13 +2,10 @@ You are given several examples of labeled MultiRC instances.
 
 Each instance follows this schema:
 {
-  "Passage": "<short coherent paragraph>",
-  "Question": "<specific question answerable from the passage>",
-  "Answers": [
-    {"Text": "<candidate answer>", "Label": 1 if correct, 0 if incorrect},
-    {"Text": "<candidate answer>", "Label": 1/0},
-    ...
-  ]
+  "Paragraph": "<short coherent paragraph>",
+  "Question": "<specific question answerable from the paragraph>",
+  "Answer": "<single candidate answer to the question>",
+  "Label": 1 if this answer is correct for the question, 0 if it is incorrect
 }
 
 Here are example few-shot samples:

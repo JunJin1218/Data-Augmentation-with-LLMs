@@ -1,41 +1,42 @@
 {
-  "format": {
-    "type": "json_schema",
-    "name": "multirc_synthetic_data",
-    "strict": true,
-    "schema": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "description": "A list of MultiRC-style instances.",
-          "items": {
+    "format": {
+        "type": "json_schema",
+        "name": "multirc_synthetic_data",
+        "strict": true,
+        "schema": {
             "type": "object",
             "properties": {
-              "Passage": {"type": "string", "description": "Short coherent paragraph providing evidence."},
-              "Question": {"type": "string", "description": "Specific question answerable from the passage."},
-              "Answers": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "Text": {"type": "string"},
-                    "Label": {"type": "number", "description": "1 if correct, 0 if incorrect"}
-                  },
-                  "required": ["Text", "Label"],
-                  "additionalProperties": false
-                },
-                "minItems": 2,
-                "maxItems": 6
-              }
+                "pairs": {
+                    "type": "array",
+                    "description": "A list of flattened MultiRC-style instances.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "paragraph": {
+                                "type": "string",
+                                "description": "The passage text associated with this question-answer pair."
+                            },
+                            "question": {
+                                "type": "string",
+                                "description": "The question about the passage."
+                            },
+                            "answer": {
+                                "type": "string",
+                                "description": "A candidate answer for this question."
+                            },
+                            "label": {
+                                "type": "number",
+                                "enum": [0, 1],
+                                "description": "1 if this answer is correct for the question, 0 otherwise."
+                            }
+                        },
+                        "required": ["paragraph", "question", "answer", "label"],
+                        "additionalProperties": false
+                    }
+                }
             },
-            "required": ["Passage", "Question", "Answers"],
+            "required": ["pairs"],
             "additionalProperties": false
-          }
         }
-      },
-      "required": ["items"],
-      "additionalProperties": false
     }
-  }
 }
