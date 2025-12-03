@@ -1,0 +1,27 @@
+{
+  "type": "json_schema",
+  "json_schema": {
+    "name": "biosses_response",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "pairs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sentence1": { "type": "string" },
+              "sentence2": { "type": "string" },
+              "score": { "type": "number", "minimum": 0, "maximum": 4 }
+            },
+            "required": ["sentence1", "sentence2", "score"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["pairs"],
+      "additionalProperties": false
+    }
+  }
+}

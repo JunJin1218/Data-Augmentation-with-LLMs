@@ -69,7 +69,11 @@ For gemini: `uv add google-genai`
   - MultiRC (testing)
 
 - [LegalBench](https://huggingface.co/datasets/nguha/legalbench)
+
   - legal_reasoning_causality
+
+- [BIOSSES](https://huggingface.co/datasets/tabilab/biosses)
+  - Biomedical sentence similarity (score ∈ [0, 4])
 
 ---
 
@@ -141,7 +145,39 @@ uv run python "grok/grok_retreive.py" dataset=legalbench subset=legal_reasoning_
 uv run python "grok/grok_convert_to_dataset.py" dataset=legalbench subset=legal_reasoning_causality
 ```
 
----
+#### BIOSSES
+
+Use these commands (no subset required):
+
+```
+uv run python "grok/grok_prompt.py" dataset=biosses subset=default
+```
+
+```
+uv run python "grok/grok_generate.py" dataset=biosses subset=default
+```
+
+```
+uv run python "grok/grok_retreive.py" dataset=biosses subset=default
+```
+
+```
+uv run python "grok/grok_convert_to_dataset.py" dataset=biosses subset=default
+```
+
+#### Train/Test Splits
+
+Use the helper to create reproducible splits. Outputs go to `data/splits/{task}/`.
+
+```
+uv run python ".\utils\split_dataset.py" --dataset legalbench --subset legal_reasoning_causality --test-pct 0.3 --seed 42
+```
+
+```
+uv run python ".\utils\split_dataset.py" --dataset biosses --test-pct 0.2 --seed 42
+```
+
+This writes `train.jsonl` and `test.jsonl` under `data/splits/{task}/`.
 
 ### Deepseek (deepseek-chat)
 
@@ -179,6 +215,8 @@ uv run python "grok/grok_convert_to_dataset.py" dataset=legalbench subset=legal_
 – **ReCoRD (Reading Comprehension with Commonsense Reasoning) — Train ≈ 100k+ queries:** Cloze‑style entity fill from news; needs coreference + commonsense reasoning. Source: news articles. Metrics: F1 / EM.
 
 – **LegalBench (legal_reasoning_causality) — Train ≈ 59:** Binary classification of causal reasoning in court opinions (statistical vs. direct evidence). Source: US Federal District Court opinions. Metric: accuracy.
+
+– **BIOSSES — Train ≈ 100:** Biomedical sentence similarity; human-annotated semantic similarity scores in [0, 4]. Source: biomedical literature. Metric: Pearson/Spearman correlation.
 
 Diagnostics (no train split):
 – **AX‑b (Broadcoverage Diagnostics):** Probes lexical semantics, predicate‑argument structure, logic, coreference, and world knowledge. Diagnostic reporting only; excluded from aggregate score.

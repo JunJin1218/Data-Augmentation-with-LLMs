@@ -1110,6 +1110,81 @@ def convert_legalbench_legal_reasoning_causality(items: List[Dict[str, Any]]) ->
     return items
 
 
+def extract_biosses_from_text(text: str) -> Optional[List[Dict[str, Any]]]:
+    """
+    Parse Grok's output for BIOSSES.
+    Expected keys: "sentence1", "sentence2", "score"
+    """
+    text = text.strip()
+    if not text:
+        return None
+
+    def norm_item(d: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        if not isinstance(d, dict):
+            return None
+        s1 = None
+        s2 = None
+        score = None
+        for k, v in d.items():
+            kl = k.lower()
+            if kl in ("sentence1", "s1", "text1", "text_1"):
+                s1 = v
+            elif kl in ("sentence2", "s2", "text2", "text_2"):
+                s2 = v
+            elif kl == "score":
+                score = v
+        if isinstance(s1, str) and isinstance(s2, str) and (isinstance(score, (int, float, str))):
+            try:
+                score_f = float(score)
+            except Exception:
+                return None
+            # Clamp to BIOSSES range [0, 4]
+            if score_f < 0:
+                score_f = 0.0
+            if score_f > 4:
+                score_f = 4.0
+            return {"sentence1": s1.strip(), "sentence2": s2.strip(), "score": score_f}
+        return None
+
+    def try_json(s: str):
+        try:
+            obj = json.loads(s)
+        except json.JSONDecodeError:
+            return None
+        if isinstance(obj, dict):
+            if "pairs" in obj and isinstance(obj["pairs"], list):
+                obj = obj["pairs"]
+            else:
+                ni = norm_item(obj)
+                if ni:
+                    return [ni]
+                return None
+        if isinstance(obj, list):
+            out = [ni for it in obj if (ni := norm_item(it))]
+            return out or None
+        return None
+
+    items = try_json(text)
+    if items:
+        return items
+    if "```" in text:
+        for part in text.split("```"):
+            part = part.strip()
+            if not part:
+                continue
+            if part.lower().startswith("json"):
+                part = part[4:].strip()
+            items = try_json(part)
+            if items:
+                return items
+    return None
+
+
+def convert_biosses(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Pass-through; items already normalized to BIOSSES fields."""
+    return items
+
+
 TASK_CONVERTERS: Dict[str, Callable[[List[Dict[str, Any]]], List[Dict[str, Any]]]] = {
     "glue-mrpc": convert_glue_mrpc,
     "super_glue-cb": convert_super_glue_cb,
@@ -1123,6 +1198,7 @@ TASK_CONVERTERS: Dict[str, Callable[[List[Dict[str, Any]]], List[Dict[str, Any]]
     "super_glue-multirc": lambda items: items,  # items already normalized to final shape
     "super_glue-record": lambda items: items,   # items already normalized to final shape
     "legalbench-legal_reasoning_causality": convert_legalbench_legal_reasoning_causality,
+    "biosses": convert_biosses,
 }
 
 
@@ -1203,6 +1279,8 @@ def load_pairs_from_batch_output(path: Path, task: str) -> List[Dict[str, Any]]:
                 pairs = extract_record_from_text(text)
             elif "legalbench" in task:
                 pairs = extract_legalbench_from_text(text)
+            elif "biosses" in task:
+                pairs = extract_biosses_from_text(text)
             else:
                 pairs = extract_pairs_from_text(text)
             # Common check for all tasks

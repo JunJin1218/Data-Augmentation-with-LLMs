@@ -1,43 +1,33 @@
 {
-    "format": {
-        "type": "json_schema",
-        "name": "mrpc_synthetic_data",
-        "strict": true,
-        "schema": {
+  "type": "json_schema",
+  "json_schema": {
+    "name": "legal_reasoning_causality_response",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "pairs": {
+          "type": "array",
+          "items": {
             "type": "object",
             "properties": {
-                "pairs": {
-                    "type": "array",
-                    "description": "A list of text pairs and their equivalence judgments.",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "Text1": {
-                                "type": "string",
-                                "description": "The First Text input"
-                            },
-                            "Text2": {
-                                "type": "string",
-                                "description": "The Second Text input"
-                            },
-                            "Equivalence": {
-                                "type": "boolean",
-                                "description": "Whether the two texts express the same or nearly the same information."
-                            }
-                        },
-                        "required": [
-                            "Text1",
-                            "Text2",
-                            "Equivalence"
-                        ],
-                        "additionalProperties": false
-                    }
-                }
+              "Text": {
+                "type": "string",
+                "description": "Excerpt from a US Federal District Court opinion."
+              },
+              "Answer": {
+                "type": "string",
+                "enum": ["Yes", "No"],
+                "description": "Whether the reasoning relies on statistical evidence."
+              }
             },
-            "required": [
-                "pairs"
-            ],
+            "required": ["Text", "Answer"],
             "additionalProperties": false
+          }
         }
+      },
+      "required": ["pairs"],
+      "additionalProperties": false
     }
+  }
 }

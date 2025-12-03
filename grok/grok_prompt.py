@@ -18,15 +18,37 @@ def load_data(cfg: DictConfig):
     dataset_name = cfg.dataset
     trust_remote_code = False
 
-    # Handle LegalBench mapping
+    # Handle dataset mappings
     if dataset_name == "legalbench":
         dataset_name = "nguha/legalbench"
         trust_remote_code = True
+    elif dataset_name == "biosses":
+        dataset_name = "tabilab/biosses"
+        trust_remote_code = False
 
-    if hasattr(cfg, "subset") and cfg.subset:
-        ds = load_dataset(dataset_name, cfg.subset, split="train", trust_remote_code=trust_remote_code)
+    # Decide subset usage: some datasets (e.g., BIOSSES) have only a default config
+    subset = getattr(cfg, "subset", None)
+    use_subset = subset not in (None, "", "default")
+
+    # Prefer local split file for BIOSSES few-shot references
+    if dataset_name == "tabilab/biosses":
+        from pathlib import Path
+        from hydra.utils import to_absolute_path
+        local_train = Path(to_absolute_path("data/splits/biosses/train.jsonl"))
+        if local_train.exists():
+            ds = load_dataset("json", data_files=str(local_train))
+            ds = ds["train"] if "train" in ds else ds
+        else:
+            # Fallback to HF
+            if use_subset:
+                ds = load_dataset(dataset_name, subset, split="train", trust_remote_code=trust_remote_code)
+            else:
+                ds = load_dataset(dataset_name, split="train", trust_remote_code=trust_remote_code)
     else:
-        ds = load_dataset(dataset_name, split="train", trust_remote_code=trust_remote_code)
+        if use_subset:
+            ds = load_dataset(dataset_name, subset, split="train", trust_remote_code=trust_remote_code)
+        else:
+            ds = load_dataset(dataset_name, split="train", trust_remote_code=trust_remote_code)
 
     # Optional shuffling to diversify few-shot chunks
     shuffle_enabled = bool(cfg.get("shuffle", False))
@@ -96,6 +118,7 @@ def main(cfg: DictConfig):
     logger.info("Output dir (batches): %s", output_dir)
 
     ds = load_data(cfg)
+    logger.info(f"Dataset loaded. Size: {len(ds)}")
     system_tmpl, user_tmpl = load_prompts(cfg)
     schema = load_schema(cfg)
 

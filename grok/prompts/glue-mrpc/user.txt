@@ -1,10 +1,13 @@
-You are given several examples of labeled sentence pairs.
+You are given several examples of labeled text excerpts.
 
 Each pair follows this schema:
 {
-  "Text1": "<sentence 1>",
-  "Text2": "<sentence 2>",
-  "Equivalence": true or false
+  "Text": "<excerpt from a court opinion>",
+  "Answer": The classification: "Yes" (statistical evidence) or "No" (direct evidence).
 }
 
 Here are example few-shot samples:
+
+{user_prompt}
+
+Now, please generate {gen_per_request} new examples following the same format.
