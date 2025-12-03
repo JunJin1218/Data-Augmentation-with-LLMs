@@ -1037,6 +1037,79 @@ def extract_record_from_text(text: str) -> Optional[List[Dict[str, Any]]]:
     return None
 
 
+def extract_legalbench_from_text(text: str) -> Optional[List[Dict[str, Any]]]:
+    """
+    Parse Grok's output for LegalBench tasks.
+    Expected keys: "Text", "Answer"
+    """
+    text = text.strip()
+    if not text:
+        return None
+
+    def norm_item(d: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        if not isinstance(d, dict):
+            return None
+        # Case-insensitive lookup
+        text_val = None
+        answer_val = None
+        for k, v in d.items():
+            if k.lower() == "text":
+                text_val = v
+            elif k.lower() == "answer":
+                answer_val = v
+        
+        if text_val is not None and answer_val is not None:
+            return {"text": str(text_val), "answer": str(answer_val)}
+        return None
+
+    def try_json(s: str):
+        try:
+            obj = json.loads(s)
+        except json.JSONDecodeError:
+            return None
+        
+        if isinstance(obj, dict):
+            # Check for "pairs" key
+            if "pairs" in obj and isinstance(obj["pairs"], list):
+                obj = obj["pairs"]
+            else:
+                # Maybe the dict itself is one item?
+                ni = norm_item(obj)
+                if ni: return [ni]
+                return None
+
+        if isinstance(obj, list):
+            out = [ni for it in obj if (ni := norm_item(it))]
+            return out or None
+        return None
+
+    # 1. Try parsing the whole text as JSON
+    items = try_json(text)
+    if items:
+        return items
+
+    # 2. Try finding JSON blocks
+    if "```" in text:
+        for part in text.split("```"):
+            part = part.strip()
+            if not part: continue
+            if part.lower().startswith("json"):
+                part = part[4:].strip()
+            items = try_json(part)
+            if items: return items
+
+    return None
+
+
+def convert_legalbench_legal_reasoning_causality(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert extracted items to LegalBench legal_reasoning_causality format.
+    Items should already have "text" and "answer" keys from extract_legalbench_from_text.
+    """
+    # The extractor already normalized keys to "text" and "answer"
+    return items
+
+
 TASK_CONVERTERS: Dict[str, Callable[[List[Dict[str, Any]]], List[Dict[str, Any]]]] = {
     "glue-mrpc": convert_glue_mrpc,
     "super_glue-cb": convert_super_glue_cb,
@@ -1049,6 +1122,7 @@ TASK_CONVERTERS: Dict[str, Callable[[List[Dict[str, Any]]], List[Dict[str, Any]]
     "super_glue-boolq": lambda items: items,  # items already in final shape
     "super_glue-multirc": lambda items: items,  # items already normalized to final shape
     "super_glue-record": lambda items: items,   # items already normalized to final shape
+    "legalbench-legal_reasoning_causality": convert_legalbench_legal_reasoning_causality,
 }
 
 
@@ -1127,6 +1201,8 @@ def load_pairs_from_batch_output(path: Path, task: str) -> List[Dict[str, Any]]:
                 pairs = extract_multirc_from_text(text)
             elif "record" in task:
                 pairs = extract_record_from_text(text)
+            elif "legalbench" in task:
+                pairs = extract_legalbench_from_text(text)
             else:
                 pairs = extract_pairs_from_text(text)
             # Common check for all tasks

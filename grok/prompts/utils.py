@@ -251,6 +251,24 @@ def user_prompt_super_glue_record(chunk):
     return "\n".join(user_parts).strip()
 
 
+def user_prompt_legalbench_legal_reasoning_causality(chunk):
+    """Format LegalBench legal_reasoning_causality examples into few-shot user prompt.
+
+    Expected HF fields: "text", "answer" ("Yes"/"No").
+    """
+    user_parts = []
+    for idx_in_chunk, ex in enumerate(chunk, start=1):
+        text = ex["text"]
+        answer = ex["answer"]
+
+        user_parts.append(
+            f"Example {idx_in_chunk}:\n"
+            f"Text: {text}\n"
+            f"Answer: {answer}\n"
+        )
+    return "\n".join(user_parts).strip()
+
+
 PROMPT_BUILDERS = {
     # GLUE
     "glue-mrpc": user_prompt_glue_mrpc,
@@ -264,6 +282,9 @@ PROMPT_BUILDERS = {
     "super_glue-boolq": user_prompt_super_glue_boolq,
     "super_glue-multirc": user_prompt_super_glue_multirc,
     "super_glue-record": user_prompt_super_glue_record,
+
+    # LegalBench
+    "legalbench-legal_reasoning_causality": user_prompt_legalbench_legal_reasoning_causality,
 }
 
 
