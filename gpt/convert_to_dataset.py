@@ -264,6 +264,28 @@ def convert_super_glue_record(items: List[Dict[str, Any]]) -> List[Dict[str, Any
         )
     return out
 
+def convert_biosses(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Convert to ReCoRD-style.
+    Expected keys per item:
+      - passage (str), query (str with @placeholder), entities (List[str]), answers (List[str])
+    """
+    out: List[Dict[str, Any]] = []
+    for it in items:
+        s1 = it.get("sentence1")
+        s2 = it.get("sentence2")
+        score = it.get("score")
+        if s1 is None or s2 is None or score is None:
+            continue
+        out.append(
+            {
+                "sentence1": s1,
+                "sentence2": s2,
+                "score": score
+            }
+        )
+    return out
+
 # 여기에 태스크별 컨버터를 계속 추가하면 됨
 # def convert_super_glue_rte(...): ...
 # def convert_sst2(...): ...
@@ -279,6 +301,7 @@ TASK_CONVERTERS: Dict[str, Callable[[List[Dict[str, Any]]], List[Dict[str, Any]]
     "super_glue-wic": convert_super_glue_wic,
     "super_glue-wsc": convert_super_glue_wsc,
     "super_glue-record": convert_super_glue_record,
+    "biosses": convert_biosses,
 }
 
 
@@ -354,7 +377,10 @@ def main(cfg: DictConfig):
       - 입력: data/{task_name}/{model_name}/batchoutput_*.jsonl
       - 출력: data/{task_name}/{model_name}/synthetic.jsonl
     """
-    task = get_task_name(cfg)       # 예: "super_glue-cb"
+    if (cfg.dataset not in ["biosses"]):
+        task = get_task_name(cfg)
+    else:
+        task = cfg.dataset
     model_name = cfg.model          # 예: "gpt-4o-mini"
 
     # -------------------------

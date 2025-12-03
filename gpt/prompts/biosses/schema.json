@@ -1,0 +1,45 @@
+{
+    "format": {
+        "type": "json_schema",
+        "name": "biosses",
+        "strict": true,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "pairs": {
+                    "type": "array",
+                    "description": "A list of text pairs and their equivalence judgments.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "sentence1": {
+                                "type": "string",
+                                "description": "First biomedical sentence stating a concrete, literature-consistent fact or finding (e.g., mechanism, clinical outcome, or quantitative result)."
+                            },
+                            "sentence2": {
+                                "type": "string",
+                                "description": "Second biomedical sentence on the same domain, phrased as a factual scientific statement suitable for comparison with sentence1."
+                            },
+                            "score": {
+                                "type": "number",
+                                "minimum": 0.0,
+                                "maximum": 4.0,
+                                "description": "BIOSSES-style semantic similarity in [0.0, 4.0], where higher indicates more nearly identical meaning (~4: paraphrase/same claim; ~2: related topic with materially different claim; ~0: unrelated)."
+                            }
+                        },
+                        "required": [
+                            "sentence1",
+                            "sentence2",
+                            "score"
+                        ],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": [
+                "pairs"
+            ],
+            "additionalProperties": false
+        }
+    }
+}

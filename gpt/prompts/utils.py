@@ -24,6 +24,24 @@ def user_prompt_glue_mrpc(chunk):
         )
     return "\n".join(user_parts).strip()
 
+def user_prompt_biosses(chunk):
+    """Format BIOSSES examples into few-shot user prompt
+    """
+    user_parts = []
+    for idx_in_chunk, ex in enumerate(chunk, start=1):
+        s1 = ex["sentence1"]
+        s2 = ex["sentence2"]
+        label = ex.get("score", None)
+
+        user_parts.append(
+            f"Example {idx_in_chunk}:\n"
+            f"sentence1: {s1}\n"
+            f"sentence2: {s2}\n"
+            f"score: {label}\n"
+        )
+
+    return "\n".join(user_parts).strip()
+
 
 def user_prompt_super_glue_cb(chunk):
     """Format SuperGLUE CB examples into few-shot user prompt.
@@ -264,12 +282,16 @@ PROMPT_BUILDERS = {
     "super_glue-boolq": user_prompt_super_glue_boolq,
     "super_glue-multirc": user_prompt_super_glue_multirc,
     "super_glue-record": user_prompt_super_glue_record,
+    "biosses": user_prompt_biosses
 }
 
 
 def get_user_prompt_fn(cfg: DictConfig):
     # subset > dataset
-    task = get_task_name(cfg)
+    if (cfg.dataset not in ["biosses"]):
+        task = get_task_name(cfg)
+    else:
+        task = cfg.dataset
     if task not in PROMPT_BUILDERS:
         raise ValueError(f"No user prompt builder registered for task '{task}'")
     return PROMPT_BUILDERS[task]

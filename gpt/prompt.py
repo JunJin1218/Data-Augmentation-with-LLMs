@@ -20,6 +20,18 @@ def load_data(cfg: DictConfig):
         dataset_name = "nguha/legalbench"
         trust_remote_code = True
 
+    if dataset_name == "biosses":
+        from pathlib import Path
+        from hydra.utils import to_absolute_path
+        local_train = Path(to_absolute_path("data/splits/biosses/train.jsonl"))
+        if local_train.exists():
+            ds = load_dataset("json", data_files=str(local_train))
+            ds = ds["train"] if "train" in ds else ds
+            print("BIOSSES")
+            return ds
+        else:
+            raise ValueError("씨발")
+
     if hasattr(cfg, "subset") and cfg.subset:
         ds = load_dataset(dataset_name, cfg.subset, split="train", trust_remote_code=trust_remote_code)
     else:
@@ -27,7 +39,10 @@ def load_data(cfg: DictConfig):
     return ds
 
 def load_prompts(cfg: DictConfig):
-    task = get_task_name(cfg)
+    if (cfg.dataset not in ["biosses"]):
+        task = get_task_name(cfg)
+    else:
+        task = cfg.dataset
 
     prompt_dir = to_absolute_path(os.path.join("gpt", "prompts", task))
     system_path = os.path.join(prompt_dir, "system.txt")
@@ -41,7 +56,10 @@ def load_prompts(cfg: DictConfig):
     return system_tmpl, user_tmpl
 
 def load_schema(cfg: DictConfig):
-    task = get_task_name(cfg)
+    if (cfg.dataset not in ["biosses"]):
+        task = get_task_name(cfg)
+    else:
+        task = cfg.dataset
 
     prompt_dir = to_absolute_path(os.path.join("gpt", "prompts", task))
     schema_path = os.path.join(prompt_dir, "schema.json")
@@ -64,7 +82,11 @@ def main(cfg: DictConfig):
     model_name = cfg.model
     batch_size = cfg.batch
     shots = cfg.shots
-    output_dir = f"gpt/batches/{get_task_name(cfg)}"
+    if (cfg.dataset not in ["biosses"]):
+        task = get_task_name(cfg)
+    else:
+        task = cfg.dataset
+    output_dir = f"gpt/batches/{task}"
 
     # Convert to absolute path because Hydra changes the working directory
     output_dir = to_absolute_path(output_dir)

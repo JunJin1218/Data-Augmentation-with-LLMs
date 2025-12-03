@@ -1,0 +1,10 @@
+You are given several examples of labeled sentence pairs.
+
+Each pair follows this schema:
+{
+  "sentence1": "<biomedical sentence>",
+  "sentence2": "<another biomedical sentence>",
+  "score": <float in [0.0, 4.0] representing semantic similarity>
+}
+
+Here are example few-shot samples:

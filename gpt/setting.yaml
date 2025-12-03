@@ -1,8 +1,8 @@
-model: gpt-4o-mini
-dataset: super_glue
+model: gpt-5.1
+dataset: biosses
 subset: cb
 batch: 1000
 shots: 5
-gen_per_request: 25
+gen_per_request: 100
 
 seed: 42
