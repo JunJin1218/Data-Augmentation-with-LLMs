@@ -1,8 +1,8 @@
 model: gpt-4o-mini
 dataset: super_glue
-subset: multirc
-batch: 200
+subset: cb
+batch: 1000
 shots: 5
-gen_per_request: 5
+gen_per_request: 25
 
 seed: 42
