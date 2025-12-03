@@ -5,13 +5,13 @@ import os
 # 실행할 SuperGLUE subset 리스트
 SUBSETS = [
     "cb",
-    "rte",
+    # "rte",
     "copa",
-    "wic",
+    # "wic",
     "wsc",
-    "boolq",
-    "multirc",
-    "record"
+    # "boolq", 
+    # "multirc",
+    # "record"
 ]
 
 LOG_DIR = "logs"

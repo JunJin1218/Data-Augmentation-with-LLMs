@@ -15,10 +15,18 @@ logger = logging.getLogger("grok_prompt")
 
 def load_data(cfg: DictConfig):
     """Load dataset from Hugging Face Hub, optionally shuffled."""
+    dataset_name = cfg.dataset
+    trust_remote_code = False
+
+    # Handle LegalBench mapping
+    if dataset_name == "legalbench":
+        dataset_name = "nguha/legalbench"
+        trust_remote_code = True
+
     if hasattr(cfg, "subset") and cfg.subset:
-        ds = load_dataset(cfg.dataset, cfg.subset, split="train")
+        ds = load_dataset(dataset_name, cfg.subset, split="train", trust_remote_code=trust_remote_code)
     else:
-        ds = load_dataset(cfg.dataset, split="train")
+        ds = load_dataset(dataset_name, split="train", trust_remote_code=trust_remote_code)
 
     # Optional shuffling to diversify few-shot chunks
     shuffle_enabled = bool(cfg.get("shuffle", False))

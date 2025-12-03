@@ -12,10 +12,18 @@ from prompts.utils import get_user_prompt_fn, get_task_name
 
 def load_data(cfg: DictConfig):
     """Load dataset from Hugging Face Hub."""
+    dataset_name = cfg.dataset
+    trust_remote_code = False
+
+    # Handle LegalBench mapping
+    if dataset_name == "legalbench":
+        dataset_name = "nguha/legalbench"
+        trust_remote_code = True
+
     if hasattr(cfg, "subset") and cfg.subset:
-        ds = load_dataset(cfg.dataset, cfg.subset, split="train")
+        ds = load_dataset(dataset_name, cfg.subset, split="train", trust_remote_code=trust_remote_code)
     else:
-        ds = load_dataset(cfg.dataset, split="train")
+        ds = load_dataset(dataset_name, split="train", trust_remote_code=trust_remote_code)
     return ds
 
 def load_prompts(cfg: DictConfig):

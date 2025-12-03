@@ -59,6 +59,7 @@ For gemini: `uv add google-genai`
 - [SuperGLUE](https://super.gluebenchmark.com/tasks/)
 
 - grok-3-mini (superGLUE task)
+
   - CB
   - RTE
   - COPA
@@ -66,6 +67,9 @@ For gemini: `uv add google-genai`
   - WiC
   - BoolQ
   - MultiRC (testing)
+
+- [LegalBench](https://huggingface.co/datasets/nguha/legalbench)
+  - legal_reasoning_causality
 
 ---
 
@@ -113,9 +117,29 @@ uv run python "grok/grok_convert_to_dataset.py" dataset=<dataset> subset=<subset
 
 ```
 
- - For SuperGLUE on HF, use `dataset=super_glue` and one of:
-   `cb`, `rte`, `copa`, `wsc`, `wic`, `boolq`, `multirc`, `record`.
-   Diagnostics `axb` and `axg` are test-only (no train split).
+- For SuperGLUE on HF, use `dataset=super_glue` and one of:
+  `cb`, `rte`, `copa`, `wsc`, `wic`, `boolq`, `multirc`, `record`.
+  Diagnostics `axb` and `axg` are test-only (no train split).
+
+#### LegalBench
+
+Use these four commands for the supported task.
+
+```
+uv run python "grok/grok_prompt.py" dataset=legalbench subset=legal_reasoning_causality
+```
+
+```
+uv run python "grok/grok_generate.py" dataset=legalbench subset=legal_reasoning_causality
+```
+
+```
+uv run python "grok/grok_retreive.py" dataset=legalbench subset=legal_reasoning_causality
+```
+
+```
+uv run python "grok/grok_convert_to_dataset.py" dataset=legalbench subset=legal_reasoning_causality
+```
 
 ---
 
@@ -154,7 +178,12 @@ uv run python "grok/grok_convert_to_dataset.py" dataset=<dataset> subset=<subset
 – **MultiRC (Multi‑Sentence Reading Comprehension) — Train ≈ 27k instances:** Multi‑answer QA per question; evaluates evidence aggregation across sentences. Source: MultiRC. Metrics: macro/micro F1 (instance‑ and question‑level).
 – **ReCoRD (Reading Comprehension with Commonsense Reasoning) — Train ≈ 100k+ queries:** Cloze‑style entity fill from news; needs coreference + commonsense reasoning. Source: news articles. Metrics: F1 / EM.
 
+– **LegalBench (legal_reasoning_causality) — Train ≈ 59:** Binary classification of causal reasoning in court opinions (statistical vs. direct evidence). Source: US Federal District Court opinions. Metric: accuracy.
+
 Diagnostics (no train split):
 – **AX‑b (Broadcoverage Diagnostics):** Probes lexical semantics, predicate‑argument structure, logic, coreference, and world knowledge. Diagnostic reporting only; excluded from aggregate score.
 – **AX‑g (Winogender Diagnostics):** Bias/robustness probe for coreference with gendered/neutral occupations. Diagnostic only; excluded from aggregate score.
+
+```
+
 ```
