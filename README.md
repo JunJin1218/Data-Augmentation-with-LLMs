@@ -7,17 +7,6 @@ Generating synthetic NLP datasets from HF benchmarks (e.g., GLUE MRPC, SuperGLUE
 
 ---
 
-## Requirements
-
-- Python: `>=3.12`
-- Package manager: uv (recommended)
-- `API keys (.env):`
-- `OPENAI_API_KEY (GPT)`
-- `XAI_API_KEY (Grok)`
-- `DEEPSEEK_API_KEY`
-- `GEMINI_API_KEY` or `GOOGLE_API_KEY (Gemini)`
-  Install
-
 **Recommended**: run with uv (no requirements.txt needed).
 Packages are pinned in pyproject.toml; uv run resolves them automatically.
 
@@ -54,18 +43,24 @@ For gemini: `uv add google-genai`
 
 ---
 
-## Current Benchmarks and Tasks supported:
+## Supported Benchmarks and Tasks
 
-- [SuperGLUE](https://super.gluebenchmark.com/tasks/)
+### [SuperGLUE](https://super.gluebenchmark.com/tasks/)
+**Models:** `grok-3-mini`, `gpt-4o-mini`
 
-- grok-3-mini (superGLUE task)
-  - CB
-  - RTE
-  - COPA
-  - WSC
-  - WiC
-  - BoolQ
-  - MultiRC (testing)
+- **CB** (CommitmentBank)
+- **RTE** (Recognizing Textual Entailment)
+- **COPA** (Choice of Plausible Alternatives)
+- **WSC** (Winograd Schema Challenge)
+- **WiC** (Words in Context)
+- **BoolQ** (Boolean Questions)
+- **MultiRC** (Multi-Sentence Reading Comprehension)
+- **ReCoRD** (Reading Comprehension with Commonsense Reasoning)
+
+### [LegalBench](https://huggingface.co/datasets/nguha/legalbench)
+**Models:** `grok-3-mini`, `gpt-4o-mini`
+
+- **legal_reasoning_causality** — **Total ≈ 59:** Binary classification of causal reasoning in court opinions (statistical vs. direct evidence). 
 
 ---
 
