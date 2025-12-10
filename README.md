@@ -165,6 +165,8 @@ uv run python "grok/grok_retreive.py" dataset=biosses subset=default
 uv run python "grok/grok_convert_to_dataset.py" dataset=biosses subset=default
 ```
 
+Note: For BioSSES, we align outputs to the 0–4 similarity score scale and use only the train split for few-shot exemplars (the test split is reserved strictly for evaluation).
+
 #### Train/Test Splits
 
 Use the helper to create reproducible splits. Outputs go to `data/splits/{task}/`.
@@ -178,6 +180,8 @@ uv run python ".\utils\split_dataset.py" --dataset biosses --test-pct 0.2 --seed
 ```
 
 This writes `train.jsonl` and `test.jsonl` under `data/splits/{task}/`.
+
+---
 
 ### Deepseek (deepseek-chat)
 
